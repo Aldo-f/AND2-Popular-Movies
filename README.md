@@ -1,7 +1,7 @@
-#AND2 Popular Movies
+# AND2 Popular Movies
 
-##Stage 1:  Main Discovery Screen, A Details View, and Settings
-###User Experience
+## Stage 1:  Main Discovery Screen, A Details View, and Settings
+### User Experience
 
 In this stage you’ll build the core experience of your movies app.
 
@@ -20,7 +20,7 @@ The sort order can be by most popular, or by top rated
 * release date
     
 ## Stage 2: Trailers, Reviews, and Favorites
-###User Experience
+### User Experience
     
 In this stage you’ll add additional functionality to the app you built in Stage 1.
     
