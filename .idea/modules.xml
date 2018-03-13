@@ -2,8 +2,10 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/AND2-Popular-Movies.iml" filepath="$PROJECT_DIR$/AND2-Popular-Movies.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/AND2-Popular-Movies.iml" filepath="$PROJECT_DIR$/.idea/AND2-Popular-Movies.iml" />
+      <module fileurl="file://D:\Users\aldof\AndroidStudioProjects\AND2-Popular-Movies\AND2-Popular-Movies.iml" filepath="D:\Users\aldof\AndroidStudioProjects\AND2-Popular-Movies\AND2-Popular-Movies.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://D:\Users\aldof\AndroidStudioProjects\AND2-Popular-Movies\app\app.iml" filepath="D:\Users\aldof\AndroidStudioProjects\AND2-Popular-Movies\app\app.iml" />
     </modules>
   </component>
 </project>
