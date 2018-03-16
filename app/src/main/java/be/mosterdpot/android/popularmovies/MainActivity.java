@@ -2,15 +2,15 @@ package be.mosterdpot.android.popularmovies;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 
 import java.util.List;
 
+import be.mosterdpot.android.popularmovies.adapter.MoviesAdapter;
 import be.mosterdpot.android.popularmovies.interfaces.MovieInterface;
 import be.mosterdpot.android.popularmovies.model.Movie;
-import be.mosterdpot.android.popularmovies.utils.MovieDeserializer;
+import be.mosterdpot.android.popularmovies.model.MovieResponse;
 import io.objectbox.Box;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -21,40 +21,59 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class MainActivity extends AppCompatActivity {
 
     private final String API_KEY = "d21283b34416ede4cf71abdc3e0f4672";
+    //@BindView(R.id.recyclerMovies)
+    RecyclerView recyclerView;
     private Box<Movie> movieBox;
+    private MoviesAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        //   ButterKnife.bind(this);
         App app = (App) getApplication();
         movieBox = app.getBoxStore().boxFor(Movie.class);
 
-        GsonBuilder gsonBuilder = new GsonBuilder();
-        gsonBuilder.registerTypeAdapter(Movie.class, new MovieDeserializer());
-        Gson gson = gsonBuilder.create();
-
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://api.themoviedb.org/3/")
-                .addConverterFactory(GsonConverterFactory.create(gson))
+                .baseUrl("http://api.themoviedb.org/3/")
+                .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
         MovieInterface service = retrofit.create(MovieInterface.class);
 
-        Call<List<Movie>> call = service.listTopRatedMovies(API_KEY);
+        Call<MovieResponse> call = service.listTopRatedMovies(API_KEY);
 
-        call.enqueue(new Callback<List<Movie>>() {
+//        movieBox.removeAll();
+
+        call.enqueue(new Callback<MovieResponse>() {
             @Override
-            public void onResponse(Call<List<Movie>> call, Response<List<Movie>> response) {
-                for (Movie movie : response.body()) {
-                    movieBox.put(movie);
+            public void onResponse(Call<MovieResponse> call, Response<MovieResponse> response) {
+
+                if (response.isSuccessful()) {
+                    for (Movie movie : response.body().getResults()) {
+                        movie.setId(0);
+                        movieBox.put(movie);
+                    }
+                    adapter.notifyDataSetChanged();
                 }
             }
 
             @Override
-            public void onFailure(Call<List<Movie>> call, Throwable t) {
+            public void onFailure(Call<MovieResponse> call, Throwable t) {
                 t.printStackTrace();
             }
         });
+
+        RecyclerView recyclerView = findViewById(R.id.recycler_view);
+        recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
+        List<Movie> movies = movieBox.getAll();
+        adapter = new MoviesAdapter(movies);
+        // adapter.setClickListener(this);
+        recyclerView.setAdapter(adapter);
     }
+
+//    @Override
+//    public void onItemClick(View view, int position) {
+//        Log.i("Test Adapter", "onItemClick: " + adapter.getItem(position));
+//    }
 }

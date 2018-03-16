@@ -1,5 +1,7 @@
 package be.mosterdpot.android.popularmovies.model;
 
+import com.google.gson.annotations.SerializedName;
+
 import io.objectbox.annotation.Entity;
 import io.objectbox.annotation.Id;
 
@@ -13,22 +15,40 @@ public class Movie {
     @Id
     long id;
 
-
+    @SerializedName("title")
     private String title;
-    private String poster;
-    private double vote_average;
-    private String release_date;
+
+    @SerializedName("poster_path")
+    private String posterPath;
+
+    @SerializedName("vote_average")
+    private double voteAverage;
+
+    @SerializedName("release_date")
+    private String releaseDate;
+
+    @SerializedName("overview")
     private String overview;
 
     public Movie() {
+
     }
 
-    public Movie(String title, String poster, double vote_average, String release_date, String overview) {
+    public Movie(long id, String title, String posterPath, double voteAverage, String releaseDate, String overview) {
+        this.id = id;
         this.title = title;
-        this.poster = poster;
-        this.vote_average = vote_average;
-        this.release_date = release_date;
+        this.posterPath = posterPath;
+        this.voteAverage = voteAverage;
+        this.releaseDate = releaseDate;
         this.overview = overview;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getTitle() {
@@ -39,28 +59,28 @@ public class Movie {
         this.title = title;
     }
 
-    public String getPoster() {
-        return poster;
+    public String getPosterPath() {
+        return posterPath;
     }
 
-    public void setPoster(String poster) {
-        this.poster = poster;
+    public void setPosterPath(String posterPath) {
+        this.posterPath = posterPath;
     }
 
-    public double getVote_average() {
-        return vote_average;
+    public double getVoteAverage() {
+        return voteAverage;
     }
 
-    public void setVote_average(double vote_average) {
-        this.vote_average = vote_average;
+    public void setVoteAverage(double voteAverage) {
+        this.voteAverage = voteAverage;
     }
 
-    public String getRelease_date() {
-        return release_date;
+    public String getReleaseDate() {
+        return releaseDate;
     }
 
-    public void setRelease_date(String release_date) {
-        this.release_date = release_date;
+    public void setReleaseDate(String releaseDate) {
+        this.releaseDate = releaseDate;
     }
 
     public String getOverview() {

@@ -36,3 +36,4 @@ You’ll add more information to your movie details view:
 - **[Retrofit](https://github.com/square/retrofit/)** As a Http client.
 - **[ButterKnife](https://github.com/JakeWharton/butterknife)** For view binding.
 - **[Picasso](https://github.com/square/picasso)** To perform image request.
+- **[GridView](https://stackoverflow.com/questions/40587168/simple-android-grid-example-using-recyclerview-with-gridlayoutmanager-like-the)** Simple Android grid example using RecyclerView with GridLayoutManager
