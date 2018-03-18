@@ -37,3 +37,4 @@ You’ll add more information to your movie details view:
 - **[ButterKnife](https://github.com/JakeWharton/butterknife)** For view binding.
 - **[Picasso](https://github.com/square/picasso)** To perform image request.
 - **[GridView](https://stackoverflow.com/questions/40587168/simple-android-grid-example-using-recyclerview-with-gridlayoutmanager-like-the)** Simple Android grid example using RecyclerView with GridLayoutManager
+- **[RecyclerView](https://stackoverflow.com/questions/40584424/simple-android-recyclerview-example)** Easy RecyclerView example

@@ -12,6 +12,8 @@ import io.objectbox.annotation.Id;
 @Entity
 public class Movie {
 
+    public static final float POSTER_ASPECT_RATIO = 1.5f;
+
     @Id
     long id;
 
