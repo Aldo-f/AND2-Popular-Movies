@@ -53,7 +53,13 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
         final Context context = holder.view.getContext();
         Movie movie = moviesList.get(position);
         holder.title.setText(movie.getTitle());
-        Picasso.with(context).load("http://image.tmdb.org/t/p/w185/" + movie.getPosterPath()).config(Bitmap.Config.RGB_565).into(holder.image);
+        Picasso.with(context)
+
+                .load("http://image.tmdb.org/t/p/w185/" + movie.getPosterPath())
+//                .placeholder(R.drawable.ic_launcher_background)
+//                .error(R.drawable.ic_launcher_background)
+                .config(Bitmap.Config.RGB_565)
+                .into(holder.image);
     }
 
     @Override
@@ -63,6 +69,11 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
 
     public void setClickListener(RecyclerItemClickListener clickListener) {
         this.clickListener = clickListener;
+    }
+
+    public void updateList(List<Movie> movieList) {
+        moviesList = movieList;
+        notifyDataSetChanged();
     }
 
     public class MovieViewHolder extends RecyclerView.ViewHolder {

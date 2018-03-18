@@ -16,33 +16,48 @@ public class Movie {
 
     @Id
     long id;
-
+    private String sortBy;
     @SerializedName("title")
     private String title;
-
     @SerializedName("poster_path")
     private String posterPath;
-
     @SerializedName("vote_average")
     private double voteAverage;
-
     @SerializedName("release_date")
     private String releaseDate;
-
     @SerializedName("overview")
     private String overview;
+    @SerializedName("original_title")
+    private String originalTitle;
 
     public Movie() {
 
     }
 
-    public Movie(long id, String title, String posterPath, double voteAverage, String releaseDate, String overview) {
+    public Movie(long id, String title, String posterPath, double voteAverage, String releaseDate, String overview, String originalTitle) {
         this.id = id;
         this.title = title;
         this.posterPath = posterPath;
         this.voteAverage = voteAverage;
         this.releaseDate = releaseDate;
         this.overview = overview;
+        this.originalTitle = originalTitle;
+    }
+
+    public String getOriginalTitle() {
+        return originalTitle;
+    }
+
+    public void setOriginalTitle(String originalTitle) {
+        this.originalTitle = originalTitle;
+    }
+
+    public String getSortBy() {
+        return sortBy;
+    }
+
+    public void setSortBy(String sortBy) {
+        this.sortBy = sortBy;
     }
 
     public long getId() {

@@ -1,12 +1,13 @@
 package be.mosterdpot.android.popularmovies;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import be.mosterdpot.android.popularmovies.adapter.MoviesAdapter;
@@ -30,6 +31,9 @@ public class MainActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     private Box<Movie> movieBox;
     private MoviesAdapter adapter;
+    private List<Movie> movieList = new ArrayList<>();
+    private MovieInterface service;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,23 +49,48 @@ public class MainActivity extends AppCompatActivity {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
-        MovieInterface service = retrofit.create(MovieInterface.class);
+        service = retrofit.create(MovieInterface.class);
 
-        Call<MovieResponse> call = service.listTopRatedMovies(API_KEY);
+        RecyclerView recyclerView = findViewById(R.id.recycler_view);
+        recyclerView.setLayoutManager(new GridLayoutManager(this, gridNumberCols));
+        adapter = new MoviesAdapter(movieList);
+        recyclerView.setAdapter(adapter);
+        recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(this, recyclerView, new OnItemClickListener() {
+            @Override
+            public void onItemClick(View v, int position) {
+                Intent intent = new Intent(MainActivity.this, DetailActivity.class);
+                intent.putExtra("MovieId", movieList.get(position).getId());
+                startActivity(intent);
+//                Toast.makeText(MainActivity.this, "" + position + " = "+movies.get(position).getTitle(), Toast.LENGTH_SHORT).show();
+            }
 
-        //TODO: fix this, don't download new date if there is no change
-        //movieBox.removeAll();
+            @Override
+            public void onLongClick(View v, int position) {
+            }
+        }));
+
+        makeCall("favorite");
+    }
+
+    private void makeCall(String sortBy) {
+        Call<MovieResponse> call;
+        if (sortBy.equals("popular")) {
+            call = service.listPopularMovies(BuildConfig.THE_MOVIE_DATABASE_API_KEY);
+        } else
+            call = service.listTopRatedMovies(BuildConfig.THE_MOVIE_DATABASE_API_KEY);
 
         call.enqueue(new Callback<MovieResponse>() {
             @Override
             public void onResponse(Call<MovieResponse> call, Response<MovieResponse> response) {
 
                 if (response.isSuccessful()) {
-                    for (Movie movie : response.body().getResults()) {
-                        movie.setId(0);
-                        movieBox.put(movie);
-                    }
+//                    for (Movie movie : response.body().getResults()) {
+//                        movie.setId(0);
+//                        movieBox.put(movie);
+//                    }
+                    movieList = response.body().getResults();
                     adapter.notifyDataSetChanged();
+                    adapter.updateList(movieList);
                 }
             }
 
@@ -70,25 +99,5 @@ public class MainActivity extends AppCompatActivity {
                 t.printStackTrace();
             }
         });
-
-        RecyclerView recyclerView = findViewById(R.id.recycler_view);
-        recyclerView.setLayoutManager(new GridLayoutManager(this, gridNumberCols));
-        final List<Movie> movies = movieBox.getAll();
-        adapter = new MoviesAdapter(movies);
-        recyclerView.setAdapter(adapter);
-        recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(this, recyclerView, new OnItemClickListener() {
-            @Override
-            public void onItemClick(View v, int position) {
-//                Intent intent = new Intent(MainActivity.this, DetailActivety.class);
-//                intent.putExtra("MovieId", movies.get(position).getId());
-//                startActivity(intent);
-                Toast.makeText(MainActivity.this, "" + position + " = "+movies.get(position).getTitle(), Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onLongClick(View v, int position) {
-
-            }
-        }));
     }
 }

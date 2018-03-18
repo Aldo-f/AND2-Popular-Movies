@@ -37,9 +37,9 @@ public class MovieDeserializer implements JsonDeserializer<List<Movie>> {
             String releaseDate = temp.get("release_date").getAsString();
             double voteAverage = temp.get("vote_average").getAsDouble();
 
-            Movie movie = new Movie(0, title, posterPath, voteAverage, releaseDate, overview);
+//            Movie movie = new Movie(0, title, posterPath, voteAverage, releaseDate, overview);
 
-            movies.add(movie);
+//            movies.add(movie);
         }
 
         return movies;
