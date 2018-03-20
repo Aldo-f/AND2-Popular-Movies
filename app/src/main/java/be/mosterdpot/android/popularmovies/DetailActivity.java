@@ -143,11 +143,12 @@ public class DetailActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.favorite) {
-            if (movie.isFavorite())
-                movie.setFavorite(false);
-            else
-                movie.setFavorite(true);
-            movieBox.put(movie);
+//            if (movie.isFavorite())
+//                movie.setFavorite(false);
+//            else
+//                movie.setFavorite(true);
+//            movieBox.put(movie);
+
             updateMenu();
         }
 
@@ -158,8 +159,8 @@ public class DetailActivity extends AppCompatActivity {
         //TODO fix this
 //        if (movie.isFavorite())
         if (true)
-            menu.getItem(0).setIcon(ContextCompat.getDrawable(this, R.drawable.ic_star_fill));
-        else
             menu.getItem(0).setIcon(ContextCompat.getDrawable(this, R.drawable.ic_star_border));
+        else
+            menu.getItem(0).setIcon(ContextCompat.getDrawable(this, R.drawable.ic_star_fill));
     }
 }
