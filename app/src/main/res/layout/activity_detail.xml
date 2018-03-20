@@ -10,25 +10,31 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
-        <!--blurry poster with title on top-->
+        <!--blurry backdrop with title on top-->
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
-
+            <!--backdrop-->
             <ImageView
                 android:id="@+id/iv_backdrop_path"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
                 android:contentDescription="@string/iv_content_description"
-                tools:src="@color/colorPrimaryDark" />
-
+                tools:src="@color/colorPrimaryDark"/>
+            <!--title with shadow-->
             <TextView
                 android:id="@+id/tv_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
+
                 android:padding="16dp"
+                android:shadowColor="#000"
+                android:shadowDx="8"
+                android:shadowDy="8"
+                android:shadowRadius="36"
+
                 android:singleLine="false"
                 android:textAlignment="center"
                 android:textColor="#FFF"
