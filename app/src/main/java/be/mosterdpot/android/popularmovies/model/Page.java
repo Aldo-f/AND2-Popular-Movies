@@ -8,7 +8,7 @@ import java.util.List;
  * Created by aldof on 15/03/2018.
  */
 
-public class MovieResponse {
+public class Page {
     @SerializedName("page")
     private int page;
 

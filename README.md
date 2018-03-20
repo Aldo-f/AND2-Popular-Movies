@@ -36,5 +36,9 @@ You’ll add more information to your movie details view:
 - **[Retrofit](https://github.com/square/retrofit/)** As a Http client.
 - **[ButterKnife](https://github.com/JakeWharton/butterknife)** For view binding.
 - **[Picasso](https://github.com/square/picasso)** To perform image request.
+- **[Picasso transformations](https://github.com/wasabeef/picasso-transformations)** Some additional easy implemented transformations library for picasso
+
+### Sources
 - **[GridView](https://stackoverflow.com/questions/40587168/simple-android-grid-example-using-recyclerview-with-gridlayoutmanager-like-the)** Simple Android grid example using RecyclerView with GridLayoutManager
 - **[RecyclerView](https://stackoverflow.com/questions/40584424/simple-android-recyclerview-example)** Easy RecyclerView example
+- **[Using an Option Menu](https://google-developer-training.gitbooks.io/android-developer-fundamentals-course-practicals/content/en/Unit%202/42_p_use_an_options_menu_and_radio_buttons.html)** Set preferences with Options Menu

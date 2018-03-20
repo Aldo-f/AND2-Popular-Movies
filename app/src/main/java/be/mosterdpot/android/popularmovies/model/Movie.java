@@ -29,12 +29,19 @@ public class Movie {
     private String overview;
     @SerializedName("original_title")
     private String originalTitle;
+    @SerializedName("homepage")
+    private String homepage;
+    @SerializedName("backdrop_path")
+    private String backdropPath;
+    // TODO
+//    @SerializedName("favorite")
+    private boolean favorite;
 
     public Movie() {
 
     }
 
-    public Movie(long id, String title, String posterPath, double voteAverage, String releaseDate, String overview, String originalTitle) {
+    public Movie(long id, String title, String posterPath, double voteAverage, String releaseDate, String overview, String originalTitle, String homepage, String backdropPath, boolean favorite) {
         this.id = id;
         this.title = title;
         this.posterPath = posterPath;
@@ -42,6 +49,34 @@ public class Movie {
         this.releaseDate = releaseDate;
         this.overview = overview;
         this.originalTitle = originalTitle;
+        this.homepage = homepage;
+        this.backdropPath = backdropPath;
+        this.favorite = false;
+
+    }
+
+    public boolean isFavorite() {
+        return favorite;
+    }
+
+    public void setFavorite(boolean favorite) {
+        this.favorite = favorite;
+    }
+
+    public String getBackdropPath() {
+        return backdropPath;
+    }
+
+    public void setBackdropPath(String backdropPath) {
+        this.backdropPath = backdropPath;
+    }
+
+    public String getHomepage() {
+        return homepage;
+    }
+
+    public void setHomepage(String homepage) {
+        this.homepage = homepage;
     }
 
     public String getOriginalTitle() {

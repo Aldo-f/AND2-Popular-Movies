@@ -1,11 +1,15 @@
 package be.mosterdpot.android.popularmovies;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,7 +17,7 @@ import java.util.List;
 import be.mosterdpot.android.popularmovies.adapter.MoviesAdapter;
 import be.mosterdpot.android.popularmovies.interfaces.MovieInterface;
 import be.mosterdpot.android.popularmovies.model.Movie;
-import be.mosterdpot.android.popularmovies.model.MovieResponse;
+import be.mosterdpot.android.popularmovies.model.Page;
 import be.mosterdpot.android.popularmovies.utils.OnItemClickListener;
 import be.mosterdpot.android.popularmovies.utils.RecyclerItemClickListener;
 import io.objectbox.Box;
@@ -23,17 +27,15 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
 
-    private final String API_KEY = "d21283b34416ede4cf71abdc3e0f4672";
     public int gridNumberCols;
-    //@BindView(R.id.recyclerMovies)
     RecyclerView recyclerView;
+
     private Box<Movie> movieBox;
     private MoviesAdapter adapter;
     private List<Movie> movieList = new ArrayList<>();
     private MovieInterface service;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,7 +63,6 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent(MainActivity.this, DetailActivity.class);
                 intent.putExtra("MovieId", movieList.get(position).getId());
                 startActivity(intent);
-//                Toast.makeText(MainActivity.this, "" + position + " = "+movies.get(position).getTitle(), Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -69,19 +70,28 @@ public class MainActivity extends AppCompatActivity {
             }
         }));
 
-        makeCall("favorite");
+
+        makeCall(String.valueOf(R.string.sort_by_most_popular));//TODO: change to preference
     }
 
     private void makeCall(String sortBy) {
-        Call<MovieResponse> call;
-        if (sortBy.equals("popular")) {
+        Call<Page> call;
+
+        if (sortBy.equals(String.valueOf(R.string.sort_by_most_popular))) {
             call = service.listPopularMovies(BuildConfig.THE_MOVIE_DATABASE_API_KEY);
-        } else
+        } else if (sortBy.equals(String.valueOf(R.string.sort_by_top_rated))) {
             call = service.listTopRatedMovies(BuildConfig.THE_MOVIE_DATABASE_API_KEY);
 
-        call.enqueue(new Callback<MovieResponse>() {
+            //TODO favorite
+//        } else if ((sortBy.equals(String.valueOf(R.string.sort_by_favorites))){
+//            call = service.listTopRatedMovies(BuildConfig.THE_MOVIE_DATABASE_API_KEY);
+        } else {
+            Toast.makeText(this, "There was an error with the call", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        call.enqueue(new Callback<Page>() {
             @Override
-            public void onResponse(Call<MovieResponse> call, Response<MovieResponse> response) {
+            public void onResponse(Call<Page> call, Response<Page> response) {
 
                 if (response.isSuccessful()) {
 //                    for (Movie movie : response.body().getResults()) {
@@ -95,9 +105,46 @@ public class MainActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<MovieResponse> call, Throwable t) {
+            public void onFailure(Call<Page> call, Throwable t) {
                 t.printStackTrace();
             }
         });
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+
+        // TODO Set the preference checked
+        menu.findItem(R.id.sort_by_most_popular).setChecked(true);
+
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        item.setChecked(false);
+        switch (item.getItemId()) {
+            case R.id.sort_by_top_rated:
+                item.setChecked(true);
+                makeCall(String.valueOf(R.string.sort_by_top_rated));
+                break;
+            case R.id.sort_by_most_popular:
+                item.setChecked(true);
+                makeCall(String.valueOf(R.string.sort_by_most_popular));
+                break;
+            case R.id.sort_by_favorite:
+                Toast.makeText(this, "Under construction", Toast.LENGTH_SHORT).show();
+                item.setChecked(true);
+//                makeCall(String.valueOf(R.string.sort_by_favorites));
+            default:
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+
     }
 }

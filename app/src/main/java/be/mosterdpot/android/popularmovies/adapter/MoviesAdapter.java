@@ -37,7 +37,6 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
 
         final Context context = itemView.getContext();
 
-        // TODO: grid_number_cols needs to be the same value as gridNumberCols from MainActivity, this changes based on the dimens 
         int gridColsNumber = context.getResources()
                 .getInteger(R.integer.grid_number_cols);
 
@@ -54,7 +53,6 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
         Movie movie = moviesList.get(position);
         holder.title.setText(movie.getTitle());
         Picasso.with(context)
-
                 .load("http://image.tmdb.org/t/p/w185/" + movie.getPosterPath())
 //                .placeholder(R.drawable.ic_launcher_background)
 //                .error(R.drawable.ic_launcher_background)
