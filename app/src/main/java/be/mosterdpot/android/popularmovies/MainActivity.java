@@ -1,5 +1,6 @@
 package be.mosterdpot.android.popularmovies;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -9,7 +10,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,10 +27,12 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+import static be.mosterdpot.android.popularmovies.R.id.recycler_view;
+
 public class MainActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
 
     public int gridNumberCols;
-    RecyclerView recyclerView;
+//    RecyclerView recyclerView;
 
     private Box<Movie> movieBox;
     private MoviesAdapter adapter;
@@ -53,7 +55,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
 
         service = retrofit.create(MovieInterface.class);
 
-        RecyclerView recyclerView = findViewById(R.id.recycler_view);
+        RecyclerView recyclerView = findViewById(recycler_view);
         recyclerView.setLayoutManager(new GridLayoutManager(this, gridNumberCols));
         adapter = new MoviesAdapter(movieList);
         recyclerView.setAdapter(adapter);
@@ -70,23 +72,25 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
             }
         }));
 
+        SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
+        int sortBy = sharedPref.getInt(getString(R.string.pref_key_sort), R.string.sort_by_most_popular);
 
-        makeCall(String.valueOf(R.string.sort_by_most_popular));//TODO: change to preference
+        makeCall(sortBy);
     }
 
-    private void makeCall(String sortBy) {
+    private void makeCall(int sortBy) {
         Call<Page> call;
-
-        if (sortBy.equals(String.valueOf(R.string.sort_by_most_popular))) {
+        if (sortBy == (R.string.sort_by_most_popular)) {
+            setTitle(R.string.title_popular);
             call = service.listPopularMovies(BuildConfig.THE_MOVIE_DATABASE_API_KEY);
-        } else if (sortBy.equals(String.valueOf(R.string.sort_by_top_rated))) {
+        } else if (sortBy == (R.string.sort_by_top_rated)) {
+            setTitle(R.string.title_top_rated);
             call = service.listTopRatedMovies(BuildConfig.THE_MOVIE_DATABASE_API_KEY);
-
-            //TODO favorite
-//        } else if ((sortBy.equals(String.valueOf(R.string.sort_by_favorites))){
-//            call = service.listTopRatedMovies(BuildConfig.THE_MOVIE_DATABASE_API_KEY);
         } else {
-            Toast.makeText(this, "There was an error with the call", Toast.LENGTH_SHORT).show();
+            setTitle(R.string.title_favorites);
+            movieList = movieBox.getAll();
+            adapter.notifyDataSetChanged();
+            adapter.updateList(movieList);
             return;
         }
         call.enqueue(new Callback<Page>() {
@@ -114,32 +118,48 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
+        SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
+        int sortBy = sharedPref.getInt(getString(R.string.pref_key_sort), R.string.sort_by_most_popular);
 
-        // TODO Set the preference checked
-        menu.findItem(R.id.sort_by_most_popular).setChecked(true);
+        if (sortBy == (R.string.sort_by_most_popular)) {
+            menu.findItem(R.id.sort_by_most_popular).setChecked(true);
+        } else if (sortBy == (R.string.sort_by_top_rated)) {
+            menu.findItem(R.id.sort_by_top_rated).setChecked(true);
+        } else
+            menu.findItem(R.id.sort_by_favorite).setChecked(true);
 
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        item.setChecked(false);
+        SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
         switch (item.getItemId()) {
             case R.id.sort_by_top_rated:
                 item.setChecked(true);
-                makeCall(String.valueOf(R.string.sort_by_top_rated));
+                setTitle(R.string.title_top_rated);
+                editor.putInt(getString(R.string.pref_key_sort), (R.string.sort_by_top_rated));
+
+                makeCall((R.string.sort_by_top_rated));
                 break;
             case R.id.sort_by_most_popular:
                 item.setChecked(true);
-                makeCall(String.valueOf(R.string.sort_by_most_popular));
+                setTitle(R.string.title_popular);
+                editor.putInt(getString(R.string.pref_key_sort), (R.string.sort_by_most_popular));
+
+                makeCall((R.string.sort_by_most_popular));
                 break;
             case R.id.sort_by_favorite:
-                Toast.makeText(this, "Under construction", Toast.LENGTH_SHORT).show();
                 item.setChecked(true);
-//                makeCall(String.valueOf(R.string.sort_by_favorites));
+                setTitle(R.string.title_favorites);
+                editor.putInt(getString(R.string.pref_key_sort), (R.string.sort_by_favorites));
+
+                makeCall(R.string.sort_by_favorites);
             default:
                 break;
         }
+        editor.apply();
         return super.onOptionsItemSelected(item);
     }
 

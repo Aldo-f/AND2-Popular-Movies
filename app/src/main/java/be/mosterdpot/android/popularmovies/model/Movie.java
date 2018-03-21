@@ -16,6 +16,7 @@ public class Movie {
 
     @Id
     long id;
+    int movieId;
     private String sortBy;
     @SerializedName("title")
     private String title;
@@ -36,13 +37,12 @@ public class Movie {
     // TODO
 //    @SerializedName("favorite")
     private boolean favorite;
-
     public Movie() {
 
     }
-
-    public Movie(long id, String title, String posterPath, double voteAverage, String releaseDate, String overview, String originalTitle, String homepage, String backdropPath, boolean favorite) {
+    public Movie(long id, int movieId, String title, String posterPath, double voteAverage, String releaseDate, String overview, String originalTitle, String homepage, String backdropPath, boolean favorite) {
         this.id = id;
+        this.movieId = movieId;
         this.title = title;
         this.posterPath = posterPath;
         this.voteAverage = voteAverage;
@@ -53,6 +53,14 @@ public class Movie {
         this.backdropPath = backdropPath;
         this.favorite = false;
 
+    }
+
+    public int getMovieId() {
+        return movieId;
+    }
+
+    public void setMovieId(int movieId) {
+        this.movieId = movieId;
     }
 
     public boolean isFavorite() {

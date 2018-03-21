@@ -17,9 +17,11 @@ import java.util.Date;
 
 import be.mosterdpot.android.popularmovies.interfaces.MovieInterface;
 import be.mosterdpot.android.popularmovies.model.Movie;
+import be.mosterdpot.android.popularmovies.model.Movie_;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.objectbox.Box;
+import io.objectbox.query.Query;
 import jp.wasabeef.picasso.transformations.BlurTransformation;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -78,29 +80,26 @@ public class DetailActivity extends AppCompatActivity {
         call.enqueue(new Callback<Movie>() {
             @Override
             public void onResponse(Call<Movie> call, Response<Movie> response) {
-
                 if (response.isSuccessful()) {
                     final Movie movie = response.body();
+                    setMovie(movie);
+//                    setTitle(movie.getOriginalTitle());
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd"); // from pattern
+                    SimpleDateFormat year_date = new SimpleDateFormat("yyyy"); // to pattern
+                    String formatReleaseDate = movie.getReleaseDate();
+                    Date date = null;
+                    try {
+                        date = sdf.parse(formatReleaseDate);
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                    final String releaseYear = year_date.format(date);
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
                             title.setText(movie.getTitle());
                             overview.setText(movie.getOverview());
-                            //setTitle(movie.getTitle()); // Sets title ov the DetailView to current movie
-                            setTitle(""); // easy fix to add a back arrow
-                            // Format releaseDate to releaseYear
-                            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd"); // from pattern
-                            SimpleDateFormat year_date = new SimpleDateFormat("yyyy"); // to pattern
-                            String formatReleaseDate = movie.getReleaseDate();
-                            Date date = null;
-                            try {
-                                date = sdf.parse(formatReleaseDate);
-                            } catch (ParseException e) {
-                                e.printStackTrace();
-                            }
-                            String releaseYear = year_date.format(date);
                             releaseDate.setText(releaseYear);
-
                             voteAverage.setText(String.valueOf(movie.getVoteAverage()));
                             originalTitle.setText(movie.getOriginalTitle());
                             homepage.setText(movie.getHomepage());
@@ -118,7 +117,7 @@ public class DetailActivity extends AppCompatActivity {
                                     .transform(new BlurTransformation(DetailActivity.this))
                                     .centerCrop() // centerInside() or centerCrop()
                                     .into(backdropPath);
-
+                            updateMenu();
                         }
                     });
                 }
@@ -135,7 +134,6 @@ public class DetailActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_detail, menu);
         this.menu = menu;
-        updateMenu();
         return true;
     }
 
@@ -143,24 +141,36 @@ public class DetailActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.favorite) {
-//            if (movie.isFavorite())
-//                movie.setFavorite(false);
-//            else
-//                movie.setFavorite(true);
-//            movieBox.put(movie);
 
+
+            Query<Movie> query = movieBox.query().equal(Movie_.movieId, movie.getMovieId()).build();
+            Movie m = query.findUnique();
+            if (m == null) {
+                movie.setFavorite(true);
+                movieBox.put(movie);
+            } else {
+                if (movie.isFavorite()) {
+                    movie.setFavorite(false);
+                    movieBox.remove(movie.getId());
+                } else
+                    movie.setFavorite(true);
+            }
             updateMenu();
         }
-
         return super.onOptionsItemSelected(item);
     }
 
     private void updateMenu() {
-        //TODO fix this
-//        if (movie.isFavorite())
-        if (true)
-            menu.getItem(0).setIcon(ContextCompat.getDrawable(this, R.drawable.ic_star_border));
-        else
+        if (movie.isFavorite())
             menu.getItem(0).setIcon(ContextCompat.getDrawable(this, R.drawable.ic_star_fill));
+        else
+            menu.getItem(0).setIcon(ContextCompat.getDrawable(this, R.drawable.ic_star_border));
+
+    }
+
+    public void setMovie(Movie movie) {
+        movie.setMovieId((int) movie.getId());
+        movie.setId(0);
+        this.movie = movie;
     }
 }
