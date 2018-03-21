@@ -1,14 +1,18 @@
 <resources>
     <!--app-->
     <string name="app_name">Popular Movies</string>
-    <string name="title">Movie title</string>
-    <!--Main-->
+    <string name="label_detail_activity" />
+    <!--Main preference menu-->
     <string name="pref_key_sort">sort_by</string>
     <string name="sort_by_most_popular">Most popular</string>
     <string name="sort_by_top_rated">Top rated</string>
     <string name="sort_by_favorites">Favorites</string>
+    <!--Title for MainActivity-->
+    <string name="title_popular">Popular movies</string>
+    <string name="title_top_rated">Top rated movies</string>
+    <string name="title_favorites">My favorite movies</string>
     <!--Detail-->
     <string name="iv_content_description">Movie backdrop image</string>
     <string name="iv_poster_description">Poster image of the movie</string>
-    <string name="favorite_movie">Favorite</string>
+    <string name="favorite_movie" />
 </resources>
