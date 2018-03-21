@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +33,6 @@ import static be.mosterdpot.android.popularmovies.R.id.recycler_view;
 public class MainActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
 
     public int gridNumberCols;
-//    RecyclerView recyclerView;
 
     private Box<Movie> movieBox;
     private MoviesAdapter adapter;
@@ -45,6 +45,8 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
         setContentView(R.layout.activity_main);
         gridNumberCols = this.getResources().getInteger(R.integer.grid_number_cols);
         App app = (App) getApplication();
+
+        final SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
 
         movieBox = app.getBoxStore().boxFor(Movie.class);
 
@@ -62,9 +64,15 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
         recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(this, recyclerView, new OnItemClickListener() {
             @Override
             public void onItemClick(View v, int position) {
-                Intent intent = new Intent(MainActivity.this, DetailActivity.class);
-                intent.putExtra("MovieId", movieList.get(position).getId());
-                startActivity(intent);
+
+                int currentPref = sharedPref.getInt(getString(R.string.pref_key_sort), R.string.sort_by_most_popular);
+                if (currentPref == R.string.sort_by_favorites) {
+                    Toast.makeText(MainActivity.this, "Under construction", Toast.LENGTH_SHORT).show();
+                } else {
+                    Intent intent = new Intent(MainActivity.this, DetailActivity.class);
+                    intent.putExtra("MovieId", movieList.get(position).getId());
+                    startActivity(intent);
+                }
             }
 
             @Override
@@ -72,7 +80,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
             }
         }));
 
-        SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
+
         int sortBy = sharedPref.getInt(getString(R.string.pref_key_sort), R.string.sort_by_most_popular);
 
         makeCall(sortBy);

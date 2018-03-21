@@ -2,7 +2,7 @@
     <!--app-->
     <string name="app_name">Popular Movies</string>
     <string name="label_detail_activity" />
-    <!--Main-->
+    <!--Main preference menu-->
     <string name="pref_key_sort">sort_by</string>
     <string name="sort_by_most_popular">Most popular</string>
     <string name="sort_by_top_rated">Top rated</string>
