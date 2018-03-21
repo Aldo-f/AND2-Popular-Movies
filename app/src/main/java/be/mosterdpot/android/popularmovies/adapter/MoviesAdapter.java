@@ -40,7 +40,6 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
         int gridColsNumber = context.getResources()
                 .getInteger(R.integer.grid_number_cols);
 
-
         itemView.getLayoutParams().height = (int) (parent.getWidth() / gridColsNumber *
                 Movie.POSTER_ASPECT_RATIO);
 
@@ -54,8 +53,6 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
         holder.title.setText(movie.getTitle());
         Picasso.with(context)
                 .load("http://image.tmdb.org/t/p/w185/" + movie.getPosterPath())
-//                .placeholder(R.drawable.ic_launcher_background)
-//                .error(R.drawable.ic_launcher_background)
                 .config(Bitmap.Config.RGB_565)
                 .into(holder.image);
     }
@@ -85,6 +82,5 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
             image = view.findViewById(R.id.image);
             this.view = view;
         }
-
     }
 }

@@ -17,9 +17,9 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:padding="@dimen/title_padding_grid"
-        android:visibility="gone"
         android:textColor="@color/colorAccent"
         android:textSize="16sp"
+        android:visibility="gone"
         tools:text="Title" />
 
 </FrameLayout>

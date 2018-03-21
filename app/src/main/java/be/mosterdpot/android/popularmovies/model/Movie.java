@@ -34,12 +34,12 @@ public class Movie {
     private String homepage;
     @SerializedName("backdrop_path")
     private String backdropPath;
-    // TODO
-//    @SerializedName("favorite")
     private boolean favorite;
+
     public Movie() {
 
     }
+
     public Movie(long id, int movieId, String title, String posterPath, double voteAverage, String releaseDate, String overview, String originalTitle, String homepage, String backdropPath, boolean favorite) {
         this.id = id;
         this.movieId = movieId;

@@ -29,7 +29,7 @@ public class MovieDeserializer implements JsonDeserializer<List<Movie>> {
 
         List<Movie> movies = new ArrayList<>();
 
-        for(JsonElement ob : jsonarray) {
+        for (JsonElement ob : jsonarray) {
             JsonObject temp = ob.getAsJsonObject();
             String title = temp.get("title").getAsString();
             String posterPath = temp.get("poster_path").getAsString();

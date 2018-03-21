@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/favorite"
-        android:title="@string/favorite_movie"
         android:icon="@drawable/ic_star_border"
-        app:showAsAction="always"/>
+        android:title="@string/favorite_movie"
+        app:showAsAction="always" />
 </menu>

@@ -83,7 +83,6 @@ public class DetailActivity extends AppCompatActivity {
                 if (response.isSuccessful()) {
                     final Movie movie = response.body();
                     setMovie(movie);
-//                    setTitle(movie.getOriginalTitle());
                     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd"); // from pattern
                     SimpleDateFormat year_date = new SimpleDateFormat("yyyy"); // to pattern
                     String formatReleaseDate = movie.getReleaseDate();
@@ -107,7 +106,7 @@ public class DetailActivity extends AppCompatActivity {
                                     .load(BASE_IMAGE_URL + WIDTH_POSTER + movie.getPosterPath())
                                     .config(Bitmap.Config.RGB_565)
                                     .resize(posterPath.getMeasuredWidth(), posterPath.getMeasuredHeight())
-                                    .centerInside() // centerInside() or centerCrop()
+                                    .centerInside()
                                     .into(posterPath);
 
                             Picasso.with(DetailActivity.this)
@@ -115,7 +114,7 @@ public class DetailActivity extends AppCompatActivity {
                                     .config(Bitmap.Config.RGB_565)
                                     .resize(backdropPath.getMeasuredWidth(), backdropPath.getMeasuredHeight())
                                     .transform(new BlurTransformation(DetailActivity.this))
-                                    .centerCrop() // centerInside() or centerCrop()
+                                    .centerCrop()
                                     .into(backdropPath);
                             updateMenu();
                         }
@@ -165,7 +164,6 @@ public class DetailActivity extends AppCompatActivity {
             menu.getItem(0).setIcon(ContextCompat.getDrawable(this, R.drawable.ic_star_fill));
         else
             menu.getItem(0).setIcon(ContextCompat.getDrawable(this, R.drawable.ic_star_border));
-
     }
 
     public void setMovie(Movie movie) {

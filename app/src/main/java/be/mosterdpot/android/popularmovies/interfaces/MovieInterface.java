@@ -21,11 +21,4 @@ public interface MovieInterface {
 
     @GET("movie/{id}")
     Call<Movie> getMovieById(@Path("id") int id, @Query("api_key") String api_key);
-
-//    @GET("movie/{id}/videos")
-//    Call<VideosModel> getVideos(@Path("id") int id, @Query("api_key") String api_key);
-//
-//    @GET("movie/{id}/reviews")
-//    Call<ReviewsModel> getReviews(@Path("id") int id, @Query("api_key") String api_key);
-
 }

@@ -21,7 +21,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
                 android:contentDescription="@string/iv_content_description"
-                tools:src="@color/colorPrimaryDark"/>
+                tools:src="@color/colorPrimaryDark" />
             <!--title with shadow-->
             <TextView
                 android:id="@+id/tv_title"

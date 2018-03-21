@@ -64,7 +64,6 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
         recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(this, recyclerView, new OnItemClickListener() {
             @Override
             public void onItemClick(View v, int position) {
-
                 int currentPref = sharedPref.getInt(getString(R.string.pref_key_sort), R.string.sort_by_most_popular);
                 if (currentPref == R.string.sort_by_favorites) {
                     Toast.makeText(MainActivity.this, "Under construction", Toast.LENGTH_SHORT).show();
@@ -79,7 +78,6 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
             public void onLongClick(View v, int position) {
             }
         }));
-
 
         int sortBy = sharedPref.getInt(getString(R.string.pref_key_sort), R.string.sort_by_most_popular);
 
@@ -104,12 +102,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
         call.enqueue(new Callback<Page>() {
             @Override
             public void onResponse(Call<Page> call, Response<Page> response) {
-
                 if (response.isSuccessful()) {
-//                    for (Movie movie : response.body().getResults()) {
-//                        movie.setId(0);
-//                        movieBox.put(movie);
-//                    }
                     movieList = response.body().getResults();
                     adapter.notifyDataSetChanged();
                     adapter.updateList(movieList);
@@ -128,14 +121,12 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
         getMenuInflater().inflate(R.menu.menu_main, menu);
         SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
         int sortBy = sharedPref.getInt(getString(R.string.pref_key_sort), R.string.sort_by_most_popular);
-
         if (sortBy == (R.string.sort_by_most_popular)) {
             menu.findItem(R.id.sort_by_most_popular).setChecked(true);
         } else if (sortBy == (R.string.sort_by_top_rated)) {
             menu.findItem(R.id.sort_by_top_rated).setChecked(true);
         } else
             menu.findItem(R.id.sort_by_favorite).setChecked(true);
-
         return true;
     }
 
@@ -148,21 +139,18 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
                 item.setChecked(true);
                 setTitle(R.string.title_top_rated);
                 editor.putInt(getString(R.string.pref_key_sort), (R.string.sort_by_top_rated));
-
                 makeCall((R.string.sort_by_top_rated));
                 break;
             case R.id.sort_by_most_popular:
                 item.setChecked(true);
                 setTitle(R.string.title_popular);
                 editor.putInt(getString(R.string.pref_key_sort), (R.string.sort_by_most_popular));
-
                 makeCall((R.string.sort_by_most_popular));
                 break;
             case R.id.sort_by_favorite:
                 item.setChecked(true);
                 setTitle(R.string.title_favorites);
                 editor.putInt(getString(R.string.pref_key_sort), (R.string.sort_by_favorites));
-
                 makeCall(R.string.sort_by_favorites);
             default:
                 break;
@@ -173,6 +161,5 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-
     }
 }
