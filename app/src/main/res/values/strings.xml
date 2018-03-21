@@ -10,7 +10,7 @@
     <!--Title for MainActivity-->
     <string name="title_popular">Popular movies</string>
     <string name="title_top_rated">Top rated movies</string>
-    <string name="title_favorites">Your favorite movies</string>
+    <string name="title_favorites">My favorite movies</string>
     <!--Detail-->
     <string name="iv_content_description">Movie backdrop image</string>
     <string name="iv_poster_description">Poster image of the movie</string>
