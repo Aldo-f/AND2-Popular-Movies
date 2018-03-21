@@ -18,6 +18,8 @@ The sort order can be by most popular, or by top rated
 * A plot synopsis (called overview in the api)
 * user rating (called vote_average in the api)
 * release date
+
+**[See end of stage 1](https://github.com/Aldo-f/AND2-Popular-Movies/releases/tag/v1.0)** 
     
 ## Stage 2: Trailers, Reviews, and Favorites
 ### User Experience
